@@ -4,12 +4,15 @@ const LanguageSwitcher = () => {
   const { i18n } = useTranslation();
   const navigate = useNavigate();
   const location = useLocation();
-  const lngs = {
+  type Language = "az" | "ru" | "en";
+  interface LanguageSwitcher {
+    nativeName: string;
+  }
+  const lngs: Record<Language, LanguageSwitcher> = {
     en: { nativeName: "English" },
     ru: { nativeName: "Russian" },
     az: { nativeName: "Azerbaijan" },
   };
-
   return (
     <div>
       {Object.keys(lngs).map((lng) => (
@@ -26,7 +29,13 @@ const LanguageSwitcher = () => {
             i18n.changeLanguage(lng);
           }}
         >
-          {(lngs as any)[lng].nativeName}
+          {
+            (
+              lngs as {
+                [key: string]: { nativeName: string };
+              }
+            )[lng].nativeName
+          }
         </button>
       ))}
     </div>
